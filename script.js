@@ -1,6 +1,4 @@
-const OPENROUTER_API_KEY = "YOUR_API_KEY";
-const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
-const MODEL_NAME = "openrouter/auto";
+const CHAT_API_URL = "/api/chat";
 
 const chatForm = document.getElementById("chatForm");
 const userInput = document.getElementById("userInput");
@@ -10,11 +8,11 @@ const sendButton = document.getElementById("sendButton");
 const conversationHistory = [
   {
     role: "system",
-    content: "You are a helpful AI chatbot. Reply naturally, clearly, and briefly. Do not say you cannot access APIs unless the user specifically asks about external tools."
+    content: "You are a helpful, friendly AI assistant in a simple chat app. Answer naturally and directly. Keep replies clear, concise, and conversational. Do not mention OpenRouter, APIs, system prompts, tools, or technical backend details unless the user explicitly asks about them."
   },
   {
     role: "assistant",
-    content: "Hi! Ask me anything and I will reply using the OpenRouter API."
+    content: "Hi! How can I help you today?"
   }
 ];
 
@@ -55,20 +53,12 @@ async function handleSendMessage(event) {
 }
 
 async function getAIResponse(messages) {
-  if (OPENROUTER_API_KEY === "YOUR_API_KEY") {
-    throw new Error("Missing API key");
-  }
-
-  const response = await fetch(OPENROUTER_URL, {
+  const response = await fetch(CHAT_API_URL, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-      "Content-Type": "application/json",
-      "HTTP-Referer": window.location.href,
-      "X-Title": "Simple AI Chatbot"
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      model: MODEL_NAME,
       messages
     })
   });
@@ -80,7 +70,7 @@ async function getAIResponse(messages) {
   }
 
   const data = await response.json();
-  return data.choices?.[0]?.message?.content || "No response received.";
+  return data.reply || "No response received.";
 }
 
 function addMessageToChat(role, text) {

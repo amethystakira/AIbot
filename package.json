@@ -1,0 +1,9 @@
+{
+  "name": "aibot",
+  "version": "1.0.0",
+  "description": "Simple AI chatbot with an env-backed local proxy",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

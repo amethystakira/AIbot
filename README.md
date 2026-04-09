@@ -1,6 +1,6 @@
 # Simple AI Chatbot
 
-A beginner-friendly AI chatbot web app built with HTML, CSS, and JavaScript.
+A beginner-friendly AI chatbot web app built with HTML, CSS, and JavaScript, with a tiny Node proxy so the OpenRouter API key stays out of the browser.
 
 ## Features
 
@@ -11,39 +11,47 @@ A beginner-friendly AI chatbot web app built with HTML, CSS, and JavaScript.
 - OpenRouter API integration
 - Basic error handling
 - Responsive layout for desktop and mobile
+- Local `.env` setup for the API key
 
 ## Files
 
 - `index.html` - app structure
 - `style.css` - chatbot styling
-- `script.js` - chat logic and OpenRouter API request
+- `script.js` - frontend chat logic
+- `server.js` - local proxy server for OpenRouter requests
+- `.env.example` - sample environment variables
 
-## How To Use
+## Setup
 
-1. Open `script.js`
-2. Replace:
+1. Create a `.env` file in the project root.
+2. Copy the contents of `.env.example`.
+3. Add your real OpenRouter API key:
 
-```js
-const OPENROUTER_API_KEY = "YOUR_API_KEY";
+```env
+OPENROUTER_API_KEY=your_real_key_here
+OPENROUTER_MODEL=openrouter/auto
+HOST=127.0.0.1
+PORT=3000
 ```
 
-with your real OpenRouter API key.
+4. Start the app:
 
-3. Open `index.html` in your browser
-4. Type a message and click `Send`
+```bash
+npm start
+```
 
-## OpenRouter Request
+5. Open:
 
-The app sends a `POST` request to:
+`http://127.0.0.1:3000`
 
-`https://openrouter.ai/api/v1/chat/completions`
+## How It Works
 
-It uses this model by default:
-
-`openrouter/auto`
+- The browser sends chat messages to `/api/chat`
+- `server.js` reads the API key from `.env`
+- The server sends the request to OpenRouter
+- The AI reply is returned back to the chat UI
 
 ## Important Note
 
-This project stores the API key in frontend JavaScript for simplicity, which is fine for learning and quick demos but not safe for production use.
-
-For a production app, move the API request to a backend so your API key is not exposed in the browser.
+- `.env` is ignored by git so your API key does not get committed
+- If a key was previously hardcoded or exposed, rotate it in OpenRouter before using the new setup
