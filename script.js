@@ -1,4 +1,4 @@
-const CHAT_API_URL = "/api/chat";
+const CHAT_API_URL = "/.netlify/functions/chat";
 
 const chatForm = document.getElementById("chatForm");
 const userInput = document.getElementById("userInput");
